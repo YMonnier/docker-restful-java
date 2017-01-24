@@ -1,5 +1,7 @@
 package com.ymonnier.restful.littleapp;
 
+import com.ymonnier.restful.littleapp.models.Person;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -11,6 +13,7 @@ import java.util.List;
  * Root resource (exposed at "myresource" path)
  */
 @Path("myresource")
+@Produces(MediaType.APPLICATION_JSON)
 public class MyResource {
 
     /**
@@ -20,8 +23,13 @@ public class MyResource {
      * @return String that will be returned as a text/plain response.
      */
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
-        return "Got it!";
+    public Person getIt() {
+
+        Person p = new Person.Builder()
+                .setName("Paul")
+                .setAddress("15 Street view")
+                .build();
+        return p;
+        //return "Got it!";
     }
 }

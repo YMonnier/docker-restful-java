@@ -16,6 +16,7 @@ public class HibernateUtil {
 
     /**
      * Create the SessionFactory from hibernate.cfg.xml
+     *
      * @return A new SessionFactory
      */
     private static SessionFactory buildSessionFactory() {
@@ -29,6 +30,7 @@ public class HibernateUtil {
 
     /**
      * Getter session factory.
+     *
      * @return session factory.
      */
     public static SessionFactory getSessionFactory() {
