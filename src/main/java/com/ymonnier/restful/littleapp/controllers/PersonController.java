@@ -1,8 +1,11 @@
 package com.ymonnier.restful.littleapp.controllers;
 
 import com.ymonnier.restful.littleapp.models.Person;
+import com.ymonnier.restful.littleapp.utilities.HibernateUtil;
 import com.ymonnier.restful.littleapp.utilities.errors.Error;
+import org.hibernate.Session;
 
+import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -11,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * Project Project.
@@ -20,9 +24,14 @@ import java.util.Set;
  * www.yseemonnier.com
  * https://github.com/YMonnier
  */
-@Path("persons")
+@Path("persons/")
 @Produces(MediaType.APPLICATION_JSON)
 public class PersonController {
+
+    private final static Logger LOGGER = Logger.getLogger(PersonController.class.getSimpleName());
+
+    @Context
+    UriInfo uriInfo;
 
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
@@ -35,8 +44,9 @@ public class PersonController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Person p, @Context UriInfo uriInfo) {
-
+    public Response create(Person person) {
+        LOGGER.info("#POST " + person.toString());
+        Response response = null;
         /*Person p = new Person.Builder()
                 .setName("Paul")
                 .setAddress("15 Street view")
@@ -44,28 +54,71 @@ public class PersonController {
         */
         //URI absoluteURI=info.getBaseUriBuilder().path("/wibble").build();
         Set<ConstraintViolation<Object>> constraintViolations =
-                validator.validate(p);
+                validator.validate(person);
 
         if (constraintViolations.size() > 0) {
-            constraintViolations.forEach(pcv -> System.out.println(pcv.getPropertyPath()));
-            Error error = new Error.Builder()
-                    .setStatus(Response.Status.BAD_REQUEST.getStatusCode())
-                    .setErrors(constraintViolations)
-                    .build();
+            response = Error.badRequest(constraintViolations)
+                    .getResponse();
+            LOGGER.warning("#POST " + response.toString());
+        } else {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            try {
+                session.beginTransaction();
+                session.save(person);
+                session.getTransaction().commit();
 
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(error)
-                    .build();
+                URI builder = uriInfo.getAbsolutePathBuilder()
+                        //.path(String.valueOf(p.getId()))
+                        .build();
+
+                response = Response
+                        .created(builder)
+                        .entity(person)
+                        .link("test", "hallo")
+                        .build();
+                LOGGER.info("#POST " + response.toString());
+            } catch (Exception exception) {
+                LOGGER.warning("#POST " + exception.getLocalizedMessage());
+                response = Error.internalServer(exception)
+                        .getResponse();
+                session.getTransaction().rollback();
+            }
         }
 
+        return response;
+    }
 
-        URI builder = uriInfo.getAbsolutePath();
+    @GET
+    @Path("{id}/")
+    public Response show(@PathParam("id") Long id) {
+        LOGGER.info("#GET {" + id + "} ");
+        Response response = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Person person = session.get(Person.class, id);
+            session.getTransaction().commit();
+            session.close();
 
-        return Response
-                .created(builder)
-                .entity(p)
-                .build();
+            if (person == null) {
+                response = Error.notFound(String.valueOf(id))
+                        .getResponse();
+                LOGGER.warning("#GET {" + id + "} " + response.toString());
+            } else {
+                response = Response
+                        .ok(person)
+                        .build();
+                LOGGER.info("#GET {" + id + "} " + response.toString());
+            }
+
+        } catch (Exception exception) {
+            response = Error.internalServer(exception)
+                    .getResponse();
+            LOGGER.warning("#GET {" + id + "} " + exception.getLocalizedMessage());
+            session.getTransaction().rollback();
+        }
+        System.out.println("TEST......");
+        return response;
     }
 
     // Create

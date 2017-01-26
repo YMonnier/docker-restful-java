@@ -1,10 +1,15 @@
 package com.ymonnier.restful.littleapp.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.ymonnier.restful.littleapp.controllers.PersonController;
+import org.glassfish.jersey.linking.Binding;
+import org.glassfish.jersey.linking.InjectLink;
+
+import javax.inject.Inject;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.core.Link;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.net.URI;
 
 /**
  * Project Project.
@@ -26,7 +31,20 @@ public class Person {
 
     @NotNull
     private String address;
+
     private String iconPath;
+
+    /*@InjectLink(
+            resource = PersonController.class,
+            style = InjectLink.Style.ABSOLUTE,
+            bindings = @Binding(name = "id", value = "${instance.id}"),
+            rel = "self"
+    )*/
+    @Transient
+    @InjectLink("widgets/${instance.id}")
+    private Link self;
+
+    public Person() {}
 
     private Person(Builder builder) {
         this.name = builder.name;

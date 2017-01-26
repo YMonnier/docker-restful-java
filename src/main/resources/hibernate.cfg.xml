@@ -6,7 +6,7 @@
     <session-factory>
 
         <property name="hibernate.connection.url">jdbc:postgresql://localhost/Jdbc</property>
-        <property name="hibernate.connection.username"></property>
+        <property name="hibernate.connection.username">Ysee</property>
         <property name="hibernate.connection.password"></property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</property>
@@ -20,7 +20,7 @@
         <property name="connection.pool_size">1</property>
         <property name="current_session_context_class">thread</property>
 
-        <mapping class="" />
+        <mapping class="com.ymonnier.restful.littleapp.models.Person" />
 
     </session-factory>
 </hibernate-configuration>
