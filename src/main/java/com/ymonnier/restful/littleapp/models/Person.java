@@ -1,7 +1,10 @@
 package com.ymonnier.restful.littleapp.models;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * Project Project.
@@ -11,11 +14,17 @@ import javax.persistence.Id;
  * www.yseemonnier.com
  * https://github.com/YMonnier
  */
+@Entity
+@Table
 public class Person {
     @Id
     @GeneratedValue
     private Long id;
+
+    @NotNull
     private String name;
+
+    @NotNull
     private String address;
     private String iconPath;
 
@@ -23,6 +32,32 @@ public class Person {
         this.name = builder.name;
         this.address = builder.address;
         this.iconPath = builder.iconPath;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getIconPath() {
+        return iconPath;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", iconPath='" + iconPath + '\'' +
+                '}';
     }
 
     public static class Builder {
