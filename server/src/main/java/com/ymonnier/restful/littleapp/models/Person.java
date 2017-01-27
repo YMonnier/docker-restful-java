@@ -1,14 +1,15 @@
 package com.ymonnier.restful.littleapp.models;
 
+import com.ymonnier.restful.littleapp.Main;
 import com.ymonnier.restful.littleapp.controllers.PersonController;
 import org.glassfish.jersey.linking.Binding;
 import org.glassfish.jersey.linking.InjectLink;
 
-import javax.inject.Inject;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Link;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.net.URI;
 
 /**
@@ -34,15 +35,8 @@ public class Person {
 
     private String iconPath;
 
-    /*@InjectLink(
-            resource = PersonController.class,
-            style = InjectLink.Style.ABSOLUTE,
-            bindings = @Binding(name = "id", value = "${instance.id}"),
-            rel = "self"
-    )*/
     @Transient
-    @InjectLink("widgets/${instance.id}")
-    private Link self;
+    String link = Main.BASE_URI + PersonController.PATH + String.valueOf(id);
 
     public Person() {}
 

@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 @Path("persons/")
 @Produces(MediaType.APPLICATION_JSON)
 public class PersonController {
-
     private final static Logger LOGGER = Logger.getLogger(PersonController.class.getSimpleName());
+    public final static String PATH = "persons/";
 
     @Context
     UriInfo uriInfo;
@@ -47,12 +47,6 @@ public class PersonController {
     public Response create(Person person) {
         LOGGER.info("#POST " + person.toString());
         Response response = null;
-        /*Person p = new Person.Builder()
-                .setName("Paul")
-                .setAddress("15 Street view")
-                .build();
-        */
-        //URI absoluteURI=info.getBaseUriBuilder().path("/wibble").build();
         Set<ConstraintViolation<Object>> constraintViolations =
                 validator.validate(person);
 
@@ -74,7 +68,6 @@ public class PersonController {
                 response = Response
                         .created(builder)
                         .entity(person)
-                        .link("test", "hallo")
                         .build();
                 LOGGER.info("#POST " + response.toString());
             } catch (Exception exception) {
