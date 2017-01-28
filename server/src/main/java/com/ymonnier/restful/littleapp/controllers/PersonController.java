@@ -13,6 +13,7 @@ import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -35,6 +36,33 @@ public class PersonController {
 
     Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
+
+    @GET
+    public Response index() {
+        LOGGER.info("#GET ");
+        Response response = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+
+            List persons = session.createQuery("from Person")
+                    .list();
+
+            session.getTransaction().commit();
+            session.close();
+
+            response = Response
+                    .ok(persons)
+                    .build();
+        } catch (Exception exception) {
+            LOGGER.warning("#GET " + exception.getLocalizedMessage());
+            response = Error.internalServer(exception)
+                    .getResponse();
+            session.getTransaction().rollback();
+        }
+
+        return response;
+    }
 
     /**
      * Method handling HTTP POST requests. The returned object will be sent

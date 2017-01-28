@@ -35,8 +35,8 @@ public class Person {
 
     private String iconPath;
 
-    @Transient
-    String link = Main.BASE_URI + PersonController.PATH + String.valueOf(id);
+    //@Transient
+    //String link = Main.BASE_URI + PersonController.PATH + String.valueOf(id);
 
     public Person() {}
 
