@@ -1,23 +1,64 @@
-<div class="jumbotron">
-  <h1>'Allo, 'Allo!</h1>
-  <p class="lead">
-    <img src="images/yeoman.png" alt="I'm Yeoman"><br>
-    Always a pleasure scaffolding your apps.
-  </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/">Splendid!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<button class="ui primary basic button" ng-click="addPerson()">Add a person</button>
 
-<div class="row marketing">
-  <h4>HTML5 Boilerplate</h4>
-  <p>
-    HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.
-  </p>
+<table class="ui single line table">
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Address</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image"></td>
+        <td>Paul</td>
+        <td>10 Peace street</td>
+        <td><i class="edit icon"></i></td>
+        <td><i class="remove icon"></i></td>
+    </tr>
+    <tr>
+        <td><img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image"></td>
+        <td>Paul</td>
+        <td>10 Peace street</td>
+        <td><i class="edit icon"></i></td>
+        <td><i class="remove icon"></i></td>
+    </tr>
+    <tr>
+        <td><img src="/images/avatar2/small/lindsay.png" class="ui mini rounded image"></td>
+        <td>Paul</td>
+        <td>10 Peace street</td>
+        <td><i class="edit icon"></i></td>
+        <td><i class="remove icon"></i></td>
+    </tr>
+    </tbody>
+</table>
 
-  <h4>Angular</h4>
-  <p>
-    AngularJS is a toolset for building the framework most suited to your application development.
-  </p>
-
-  <h4>Karma</h4>
-  <p>Spectacular Test Runner for JavaScript.</p>
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Adding
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" name="name" placeholder="Name...">
+            </div>
+            <div class="field">
+                <label>Address</label>
+                <input type="text" name="address" placeholder="Address..">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <div class="ui positive right labeled icon button">
+            Submit
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
 </div>
