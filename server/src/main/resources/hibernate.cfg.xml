@@ -4,10 +4,10 @@
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost/Jdbc</property>
-        <property name="hibernate.connection.username">Ysee</property>
-        <property name="hibernate.connection.password"></property>
+        <!-- URL from docker links & env config see(./docker/database.setup.env) -->
+        <property name="hibernate.connection.url">jdbc:postgresql://database/apirest</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</property>
 
