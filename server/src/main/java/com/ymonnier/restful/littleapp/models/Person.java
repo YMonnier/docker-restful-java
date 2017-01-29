@@ -33,17 +33,17 @@ public class Person {
     @NotNull
     private String address;
 
-    private String iconPath;
-
-    //@Transient
-    //String link = Main.BASE_URI + PersonController.PATH + String.valueOf(id);
-
-    public Person() {}
+    public Person() {
+    }
 
     private Person(Builder builder) {
         this.name = builder.name;
         this.address = builder.address;
-        this.iconPath = builder.iconPath;
+    }
+
+    public void update(Person person) {
+        this.name = person.getName();
+        this.address = person.getAddress();
     }
 
     public Long getId() {
@@ -58,9 +58,6 @@ public class Person {
         return address;
     }
 
-    public String getIconPath() {
-        return iconPath;
-    }
 
     @Override
     public String toString() {
@@ -68,14 +65,12 @@ public class Person {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
-                ", iconPath='" + iconPath + '\'' +
                 '}';
     }
 
     public static class Builder {
         private String name;
         private String address;
-        private String iconPath;
 
         public Person build() {
             return new Person(this);
@@ -88,11 +83,6 @@ public class Person {
 
         public Builder setAddress(String address) {
             this.address = address;
-            return this;
-        }
-
-        public Builder setIconPath(String iconPath) {
-            this.iconPath = iconPath;
             return this;
         }
     }
