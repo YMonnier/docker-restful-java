@@ -80,7 +80,9 @@ RUN wget http://ftp.fau.de/apache/maven/maven-3/$MAVEN_VERSION/binaries/apache-m
 
 # Workspace
 ENV WORKSPACE /home/app/
+
 RUN mkdir -p $WORKSPACE
 WORKDIR $WORKSPACE
+
 COPY . $WORKSPACE
-CMD cd $WORKSPACE && mvn package
+RUN mvn install -DskipTests
