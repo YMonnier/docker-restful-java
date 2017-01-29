@@ -21,7 +21,19 @@ angular.module('webApp')
                 all: function (successCallback, errorCallback) {
                     $http.get(url, config)
                         .then(successCallback, errorCallback);
+                },
+                create: function (data, successCallback, errorCallback) {
+                    $http.post(url, data, config)
+                        .then(successCallback, errorCallback);
+                },
+                update: function (data, successCallback, errorCallback) {
+                    $http.put(url + data.id, data, config)
+                        .then(successCallback, errorCallback);
+                },
+                delete: function (data, successCallback, errorCallback) {
+                    $http.delete(url + data.id, config)
+                        .then(successCallback, errorCallback);
                 }
-            }
+            };
         })();
     });

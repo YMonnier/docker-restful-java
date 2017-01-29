@@ -22,6 +22,7 @@ angular
             .otherwise({
                 redirectTo: '/'
             });
+
     }).run(function ($rootScope) {
-    $rootScope.apiURL = 'http://localhost:8080/littleapp/';
+    $rootScope.apiURL = 'http://server/littleapp/';
 });

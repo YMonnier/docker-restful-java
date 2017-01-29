@@ -3,28 +3,24 @@
 
 // Main features //
 html, body {
- margin: 0 auto;
- padding: 0;
- height: 100%;
-}
-.main.container {
- margin-top: 70px;
- min-height: 100%;
- position: relative;
- height: 100%;
+  margin: 0 auto;
+  padding: 0;
+  height: 100%;
 }
 
-body {
- padding-bottom: 48px;   /* Height of the footer */
-}
-footer {
- position: absolute;
- bottom: 0;
- width: 100%;
- text-align: center;
+.main.container {
+  margin-top: 70px;
+  min-height: 100%;
+  position: relative;
+  height: 100%;
 }
 
 // Header //
 header p {
- margin-left: 10px;
+  margin-left: 10px;
+}
+
+// Person action
+tr .icon:hover {
+  cursor: pointer;
 }
