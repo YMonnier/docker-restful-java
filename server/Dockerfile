@@ -85,4 +85,6 @@ RUN mkdir -p $WORKSPACE
 WORKDIR $WORKSPACE
 
 COPY . $WORKSPACE
-RUN mvn install -DskipTests
+RUN mvn clean install -DskipTests
+
+ENTRYPOINT mvn exec:java
