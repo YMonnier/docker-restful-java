@@ -37,7 +37,7 @@ execute `web/dist/index.html`
 ```
 docker-compose up -d
 ```
-Then run the script shell `run.sh` allowing to change the ip to access to server container from the host.
+Then run the script shell `run.sh` allowing to change the ip into the **client site** to access to server container from the host.
 
  `./run.sh $(docker-machine ip)` or `./run.sh [your docker bridge ip]`
 
