@@ -23,5 +23,5 @@ angular
                 redirectTo: '/'
             });
     }).run(function ($rootScope) {
-    $rootScope.apiURL = 'http://192.168.99.100:8080/littleapp/';
+    $rootScope.apiURL = 'http://123.12.234.2:8080/littleapp/';
 });
