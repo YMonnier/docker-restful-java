@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -26,6 +28,7 @@ public class User {
 
     @NotNull
     @Length(min = 4)
+    @Column(unique = true)
     private String nickname;
 
     @Column(name = "password_hash")
@@ -35,7 +38,6 @@ public class User {
     @NotNull
     private String address;
 
-    @Null
     private String token;
 
     @NotNull
@@ -60,6 +62,10 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getNickname() {
@@ -110,3 +116,4 @@ public class User {
         }
     }
 }
+

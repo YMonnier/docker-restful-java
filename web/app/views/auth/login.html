@@ -6,25 +6,35 @@
                 Log-in to your account
             </div>
         </h2>
-        <form class="ui large form">
+        <div class="ui error message" ng-class="{hidden: errors.length === 0}">
+            <i class="close icon"></i>
+            <div class="header">
+                There were some errors with your submission
+            </div>
+            <ul class="list">
+                <li ng-repeat="error in errors">{{error}}</li>
+            </ul>
+        </div>
+        <form name="form" class="ui large form" ng-class="{loading: processing}">
             <div class="ui stacked segment">
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="user icon"></i>
-                        <input type="text" ng-model="user.name" placeholder="Username">
+                        <input type="text" ng-model="user.nickname" placeholder="Username" required>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input type="password" ng-model="user.password" placeholder="Password">
+                        <input type="password" ng-model="user.password" placeholder="Password" required>
                     </div>
                 </div>
-                <div class="ui fluid large blue submit button">Login</div>
+                <div class="ui fluid large blue submit button"
+                     ng-class="{disabled: form.$error.required}"
+                     ng-click="login(user)">Login
+                </div>
             </div>
-
             <div class="ui error message"></div>
-
         </form>
 
         <div class="ui message">

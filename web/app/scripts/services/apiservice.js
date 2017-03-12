@@ -9,35 +9,47 @@
  */
 angular.module('webApp')
     .service('apiService', function ($rootScope, $http) {
-        // AngularJS will instantiate a singleton by calling "new" on this function
-        const url = $rootScope.apiURL + 'persons/';
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
-        this.persons = (function () {
+        var config = function () {
             return {
-                all: function (successCallback, errorCallback) {
-                    $http.get(url, config)
-                        .then(successCallback, errorCallback);
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': $rootScope.user.token,
+                    'Role': $rootScope.user.role
+                }
+            };
+        };
+
+        this.users = (function () {
+            const url = $rootScope.apiURL + 'users/';
+            return {
+                all: function () {
+                    return $http.get(url, config());
                 },
-                create: function (data, successCallback, errorCallback) {
-                    $http.post(url, data, config)
-                        .then(successCallback, errorCallback);
+                create: function (data) {
+                    return $http.post(url, data, config());
                 },
-                update: function (data, successCallback, errorCallback) {
-                    $http.put(url + data.id, data, config)
-                        .then(successCallback, errorCallback);
+                update: function (id, data) {
+                    return $http.post(url + data.id, data, config());
                 },
-                delete: function (data, successCallback, errorCallback) {
-                    $http.delete(url + data.id, config)
-                        .then(successCallback, errorCallback);
+                delete: function (id) {
+                    return $http.delete(url + id);
                 }
             };
         })();
 
-        this.isValid = function(response) {
+        this.auth = (function () {
+            const url = $rootScope.apiURL + 'auth/';
+            return {
+                registration: function (data) {
+                    return $http.post(url + 'register', data, config());
+                },
+                login: function (data) {
+                    return $http.post(url + 'login', data, config());
+                }
+            }
+        })();
+
+        this.isValid = function (response) {
             return response.status >= 200 && response.status < 400;
         };
     });

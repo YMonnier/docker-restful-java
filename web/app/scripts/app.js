@@ -14,16 +14,14 @@ angular
         'ngRoute.middleware'
     ])
     .value('authenticate', {
-        val: false,
-        hidden: false
+        val: false
     })
     .config(function ($routeProvider, $middlewareProvider) {
-        const middlewareAuth = 'middleware-auth';
-        console.log('middlewareProvider');
         $middlewareProvider.map({
             'middlewareAuth': function auth(authenticate) {
-                console.log('test ' + authenticate);
-                if (authenticate === true) {
+                console.log('test ...');
+                console.log(authenticate);
+                if (authenticate.val === true) {
                     return this.next();
                 }
                 console.log('error');
@@ -48,14 +46,14 @@ angular
                 middleware: 'middlewareAuth'
             })
             .when('/login', {
-              templateUrl: 'views/login.html',
-              controller: 'LoginCtrl',
-              controllerAs: 'login'
+                templateUrl: 'views/auth/login.html',
+                controller: 'LoginCtrl',
+                controllerAs: 'auth/login'
             })
             .when('/register', {
-              templateUrl: 'views/register.html',
-              controller: 'RegisterCtrl',
-              controllerAs: 'register'
+                templateUrl: 'views/auth/register.html',
+                controller: 'RegisterCtrl',
+                controllerAs: 'auth/register'
             })
             .otherwise({
                 redirectTo: '/'
@@ -63,5 +61,5 @@ angular
     })
     .run(function ($rootScope) {
         $rootScope.apiURL = 'http://127.0.0.1:8080/littleapp/';
-        $rootScope.auth = false;
+        $rootScope.user = {};
     });
