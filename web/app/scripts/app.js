@@ -33,14 +33,14 @@ angular
             .when('/', {
                 redirectTo: '/login'
             })
-            .when('/person', {
-                templateUrl: 'views/persons.html',
-                controller: 'Persons',
-                controllerAs: 'persons',
+            .when('/persons', {
+                templateUrl: 'views/users.html',
+                controller: 'UsersCtrl',
+                controllerAs: 'users',
                 middleware: 'middlewareAuth'
             })
             .when('/chat', {
-                templateUrl: 'views/chat.html',
+                templateUrl: 'views/channels.html',
                 controller: 'ChatCtrl',
                 controllerAs: 'chat',
                 middleware: 'middlewareAuth'
@@ -61,5 +61,5 @@ angular
     })
     .run(function ($rootScope) {
         $rootScope.apiURL = 'http://127.0.0.1:8080/littleapp/';
-        $rootScope.user = {};
+        $rootScope.user = {test: 'test'};
     });

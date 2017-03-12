@@ -8,7 +8,7 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-    .controller('LoginCtrl', function ($rootScope, $scope, apiService, authenticate) {
+    .controller('LoginCtrl', function ($rootScope, $scope, $location, apiService, authenticate) {
         $scope.user = {};
         $scope.processing = false;
         $scope.errors = [];
@@ -23,7 +23,8 @@ angular.module('webApp')
                         console.log(response);
                         $scope.processing = false;
                         authenticate.val = true;
-                        $rootScope.user = response.data
+                        $rootScope.user = response.data;
+                        $location.path('/persons');
                     }
                 }, function(error) {
                     console.log(error);

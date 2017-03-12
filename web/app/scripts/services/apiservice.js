@@ -13,8 +13,7 @@ angular.module('webApp')
             return {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': $rootScope.user.token,
-                    'Role': $rootScope.user.role
+                    'Authorization': $rootScope.user.token
                 }
             };
         };
@@ -29,7 +28,7 @@ angular.module('webApp')
                     return $http.post(url, data, config());
                 },
                 update: function (id, data) {
-                    return $http.post(url + data.id, data, config());
+                    return $http.put(url + id, data, config());
                 },
                 delete: function (id) {
                     return $http.delete(url + id);
