@@ -1,15 +1,13 @@
 package com.ymonnier.restful.littleapp.controllers;
 
-import com.ymonnier.restful.littleapp.models.Person;
+import com.ymonnier.restful.littleapp.models.User;
 import com.ymonnier.restful.littleapp.utilities.HibernateUtil;
 import com.ymonnier.restful.littleapp.utilities.errors.Error;
 import org.hibernate.Session;
 
-import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.net.URI;
@@ -20,15 +18,15 @@ import java.util.logging.Logger;
 /**
  * Project Project.
  * Package com.ymonnier.restful.littleapp.controllers.
- * File PersonController.java.
+ * File UserController.java.
  * Created by Ysee on 24/01/2017 - 23:04.
  * www.yseemonnier.com
  * https://github.com/YMonnier
  */
-@Path("persons/")
+@Path("users/")
 @Produces(MediaType.APPLICATION_JSON)
-public class PersonController {
-    private final static Logger LOGGER = Logger.getLogger(PersonController.class.getSimpleName());
+public class UserController {
+    private final static Logger LOGGER = Logger.getLogger(UserController.class.getSimpleName());
     public final static String PATH = "persons/";
 
     @Context
@@ -49,10 +47,8 @@ public class PersonController {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-
-            List persons = session.createQuery("from Person")
+            List persons = session.createQuery("from User")
                     .list();
-
             session.getTransaction().commit();
             session.close();
 
@@ -77,11 +73,11 @@ public class PersonController {
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Person person) {
-        LOGGER.info("#POST " + person.toString());
+    public Response create(User user) {
+        LOGGER.info("#POST " + user.toString());
         Response response = null;
         Set<ConstraintViolation<Object>> constraintViolations =
-                validator.validate(person);
+                validator.validate(user);
 
         if (constraintViolations.size() > 0) {
             response = Error.badRequest(constraintViolations)
@@ -91,7 +87,7 @@ public class PersonController {
             Session session = HibernateUtil.getSessionFactory().openSession();
             try {
                 session.beginTransaction();
-                session.save(person);
+                session.save(user);
                 session.getTransaction().commit();
 
                 URI builder = uriInfo.getAbsolutePathBuilder()
@@ -100,7 +96,7 @@ public class PersonController {
 
                 response = Response
                         .created(builder)
-                        .entity(person)
+                        .entity(user)
                         .build();
                 LOGGER.info("#POST " + response.toString());
             } catch (Exception exception) {
@@ -116,9 +112,9 @@ public class PersonController {
 
     /**
      * Http requet which get a specific
-     * person depending on the id.
-     * @param id person id
-     * @return a response which contains the person or errors.
+     * user depending on the id.
+     * @param id user id
+     * @return a response which contains the user or errors.
      */
     @GET
     @Path("{id}/")
@@ -128,17 +124,17 @@ public class PersonController {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Person person = session.get(Person.class, id);
+            User user = session.get(User.class, id);
             session.getTransaction().commit();
             session.close();
 
-            if (person == null) {
+            if (user == null) {
                 response = Error.notFound(String.valueOf(id))
                         .getResponse();
                 LOGGER.warning("#GET {" + id + "} " + response.toString());
             } else {
                 response = Response
-                        .ok(person)
+                        .ok(user)
                         .build();
                 LOGGER.info("#GET {" + id + "} " + response.toString());
             }
@@ -154,20 +150,20 @@ public class PersonController {
 
 
     /**
-     * Update HTTP Request which allows to update a person.
-     * @param id person id
-     * @param person person data
-     * @return a response which contains the person updated or errors.
+     * Update HTTP Request which allows to update a user.
+     * @param id user id
+     * @param user user data
+     * @return a response which contains the user updated or errors.
      */
     @PUT
     @Path("{id}/")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Long id, Person person) {
+    public Response update(@PathParam("id") Long id, User user) {
         LOGGER.info("#PUT {" + id + "} ");
         Response response = null;
 
         Set<ConstraintViolation<Object>> constraintViolations =
-                validator.validate(person);
+                validator.validate(user);
 
         if (constraintViolations.size() > 0) {
             response = Error.badRequest(constraintViolations)
@@ -177,17 +173,17 @@ public class PersonController {
             Session session = HibernateUtil.getSessionFactory().openSession();
             try {
                 session.beginTransaction();
-                Person personChecked = session.get(Person.class, id);
+                User userChecked = session.get(User.class, id);
 
-                if (personChecked == null) {
+                if (userChecked == null) {
                     response = Error.notFound(String.valueOf(id))
                             .getResponse();
                     LOGGER.warning("#PUT {" + id + "} " + response.toString());
                 } else {
-                    personChecked.update(person);
-                    session.update(personChecked);
+                    userChecked.update(user);
+                    session.update(userChecked);
                     response = Response
-                            .ok(person)
+                            .ok(user)
                             .build();
                     LOGGER.info("#PUT {" + id + "} " + response.toString());
                 }
@@ -205,9 +201,9 @@ public class PersonController {
         return response;
     }
     /**
-     * HTTP Request which allows to destroy a specific person.
-     * @param id person id
-     * @return a response which contains the person updated or errors.
+     * HTTP Request which allows to destroy a specific user.
+     * @param id user id
+     * @return a response which contains the user updated or errors.
      */
     @DELETE
     @Path("{id}/")
@@ -218,16 +214,16 @@ public class PersonController {
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Person person = session.get(Person.class, id);
+            User user = session.get(User.class, id);
 
-            if (person == null) {
+            if (user == null) {
                 response = Error.notFound(String.valueOf(id))
                         .getResponse();
                 LOGGER.warning("#GET {" + id + "} " + response.toString());
             } else {
-                session.delete(person);
+                session.delete(user);
                 response = Response
-                        .ok(person)
+                        .ok(user)
                         .build();
                 LOGGER.info("#GET {" + id + "} " + response.toString());
             }

@@ -43,6 +43,7 @@ public class GsonMessageConverter
             final GsonBuilder gsonBuilder = new GsonBuilder();
             gson = gsonBuilder.disableHtmlEscaping()
                     //.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    //.excludeFieldsWithoutExposeAnnotation()
                     .setPrettyPrinting()
                     .serializeNulls()
                     .create();

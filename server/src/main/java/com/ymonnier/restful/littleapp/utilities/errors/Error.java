@@ -1,7 +1,5 @@
 package com.ymonnier.restful.littleapp.utilities.errors;
 
-import com.ymonnier.restful.littleapp.models.Person;
-
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
