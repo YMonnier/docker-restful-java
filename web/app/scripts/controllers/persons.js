@@ -8,15 +8,26 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-    .controller('MainCtrl', function ($scope, $rootScope, apiService) {
+    .controller('PersonsCtrl', function ($scope, $rootScope, apiService) {
         $scope.persons = [];
         $scope.errors = [];
         var update = false;
 
+        const setErrors = function (response) {
+            if (response.status >= 400) {
+                $scope.errors = response.data.errors;
+            }
+        };
+
+        const showModal = function () {
+            $scope.errors = [];
+            $('.ui.modal').modal('show');
+        };
+
         // GET //
         // Fetch all persons
         apiService.persons.all(function (successResponse) {
-            if (successResponse.status >= 200 && successResponse.status < 400) {
+            if (apiService.isValid(successResponse)) {
                 $scope.persons = successResponse.data;
             }
         }, function (errorResponse) {
@@ -29,23 +40,18 @@ angular.module('webApp')
             $scope.user = null;
             showModal();
         };
-        const showModal = function () {
-            $scope.errors = [];
-            $('.ui.modal').modal('show');
-        };
 
         // POST //
         // Add a new person
         $scope.blankP = {};
-        $scope.reset = function () {
+        $scope.reset = (function () {
             $scope.user = angular.copy($scope.blankP);
-        };
-        $scope.reset();
+        })();
         $scope.addPerson = function (user) {
             console.log(user);
             if (!update) {
                 apiService.persons.create(user, function (response) {
-                    if (response.status >= 200 && response.status < 400) {
+                    if (apiService.isValid(response)) {
                         $scope.persons.push(response.data);
                     }
                 }, function (response) {
@@ -53,7 +59,7 @@ angular.module('webApp')
                 });
             } else {
                 apiService.persons.update(user, function (response) {
-                    if (response.status >= 200 && response.status < 400) {
+                    if (apiService.isValid(response)) {
                         var index = $scope.persons.indexOf(user);
                         if (index > -1) {
                             $scope.persons[index] = response.data;
@@ -67,10 +73,10 @@ angular.module('webApp')
 
         // DELETE //
         // Delete the person
-        $scope.delete = function(user) {
+        $scope.delete = function (user) {
             var index = $scope.persons.indexOf(user);
             apiService.persons.delete(user, function (response) {
-                if (response.status >= 200 && response.status < 400) {
+                if (apiService.isValid(response)) {
                     if (index > -1) {
                         $scope.persons.splice(index, 1);
                     }
@@ -84,11 +90,5 @@ angular.module('webApp')
             update = true;
             $scope.user = user;
             showModal();
-        };
-
-        const setErrors = function(response) {
-            if (response.status >= 400) {
-                $scope.errors = response.data.errors;
-            }
         };
     });

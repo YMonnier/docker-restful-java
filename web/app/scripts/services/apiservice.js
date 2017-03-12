@@ -36,4 +36,8 @@ angular.module('webApp')
                 }
             };
         })();
+
+        this.isValid = function(response) {
+            return response.status >= 200 && response.status < 400;
+        };
     });
