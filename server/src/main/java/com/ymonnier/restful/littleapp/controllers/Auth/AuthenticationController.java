@@ -1,4 +1,4 @@
-package com.ymonnier.restful.littleapp.controllers;
+package com.ymonnier.restful.littleapp.controllers.Auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.ymonnier.restful.littleapp.models.User;
 import com.ymonnier.restful.littleapp.models.User_;
 import com.ymonnier.restful.littleapp.utilities.HibernateUtil;
+import com.ymonnier.restful.littleapp.utilities.TokenUtil;
 import com.ymonnier.restful.littleapp.utilities.errors.Error;
 import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,7 +26,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -132,12 +132,12 @@ public class AuthenticationController {
                 user = session.createQuery(criteria).getSingleResult();
 
                 if (user != null) {
-                    if(BCrypt.checkpw(password, user.getPasswordHash())) {
+                    if (BCrypt.checkpw(password, user.getPasswordHash())) {
                         session.beginTransaction();
-                        String token = JWT.create()
-                                .withIssuer(user.getId() + user.getNickname())
-                                .sign(Algorithm.HMAC256(user.getPasswordHash() + user.getId()));
+
+                        String token = TokenUtil.generate(user);
                         user.setToken(token);
+
                         session.update(user);
                         session.getTransaction().commit();
                     } else {

@@ -7,4 +7,5 @@ import javax.persistence.metamodel.StaticMetamodel;
 public class User_ {
     public static volatile SingularAttribute<User, Integer> id;
     public static volatile SingularAttribute<User, String> nickname;
+    public static volatile SingularAttribute<User, String> token;
 }

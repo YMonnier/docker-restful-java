@@ -60,6 +60,13 @@ public class Error {
                 .build();
     }
 
+    public static Error unauthorized() {
+        return new Builder()
+                .setStatus(Response.Status.UNAUTHORIZED.getStatusCode())
+                .setErrors("Need authentication")
+                .build();
+    }
+
     public static class Builder {
         private int status;
         private Collection<String> errors;
