@@ -10,6 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Project Project.
@@ -39,6 +41,10 @@ public class User {
     private String address;
 
     private String token;
+
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    private List<Channel> channels = new ArrayList<>();
 
     @NotNull
     private int role;
@@ -80,6 +86,10 @@ public class User {
         return passwordHash;
     }
 
+    public List<Channel> getChannels() {
+        return channels;
+    }
+
     public int getRole() {
         return role;
     }
@@ -93,7 +103,11 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", nickname='" + nickname + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
                 ", address='" + address + '\'' +
+                ", token='" + token + '\'' +
+                ", channels=" + channels +
+                ", role=" + role +
                 '}';
     }
 

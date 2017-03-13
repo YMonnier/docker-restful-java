@@ -1,1 +1,54 @@
-<p>This is the chat view.</p>
+<div class="ui error message" ng-class="{hidden: errors.length === 0}">
+    <i class="close icon"></i>
+    <div class="header">
+        There were some errors with your submission
+    </div>
+    <ul class="list">
+        <li ng-repeat="error in errors">{{error}}</li>
+    </ul>
+</div>
+<button class="ui primary button" ng-click="showModal()">
+    New Channel
+</button>
+<table class="ui single line table">
+    <thead>
+    <tr>
+        <th>Channel</th>
+        <th>Created By</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="channel in channels">
+        <td>{{channel.name}}</td>
+        <td>{{channel.user.nickname}}</td>
+        <td ng-show="user.id === channel.user.id"><i class="remove icon" ng-click="delete(channel)"></i></td>
+        <td><i class="commenting icon" ng-click="join(channel)"></i></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+        Adding
+    </div>
+    <div class="content">
+        <form class="ui form">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" ng-model="channel.name" placeholder="Channel name...">
+            </div>
+        </form>
+    </div>
+    <div class="actions">
+        <div class="ui black deny button">
+            Cancel
+        </div>
+        <div class="ui positive right labeled icon button" ng-click="add(channel)">
+            Submit
+            <i class="checkmark icon"></i>
+        </div>
+    </div>
+</div>

@@ -9,7 +9,7 @@
  */
 angular.module('webApp')
     .controller('LoginCtrl', function ($rootScope, $scope, $location, apiService, authenticate) {
-        $scope.user = {};
+        $scope.user = {nickname: 'ymonnier', password: 'abcd123456'};
         $scope.processing = false;
         $scope.errors = [];
         $scope.login = function(user) {
@@ -25,6 +25,8 @@ angular.module('webApp')
                         authenticate.val = true;
                         $rootScope.user = response.data;
                         $location.path('/persons');
+                    } else {
+                        $scope.processing = false;
                     }
                 }, function(error) {
                     console.log(error);

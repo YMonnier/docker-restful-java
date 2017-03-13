@@ -22,6 +22,7 @@
         <property name="current_session_context_class">thread</property>
 
         <mapping class="com.ymonnier.restful.littleapp.models.User" />
+        <mapping class="com.ymonnier.restful.littleapp.models.Channel" />
 
     </session-factory>
 </hibernate-configuration>

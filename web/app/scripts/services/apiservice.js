@@ -18,6 +18,18 @@ angular.module('webApp')
             };
         };
 
+        this.auth = (function () {
+            const url = $rootScope.apiURL + 'auth/';
+            return {
+                registration: function (data) {
+                    return $http.post(url + 'register', data, config());
+                },
+                login: function (data) {
+                    return $http.post(url + 'login', data, config());
+                }
+            }
+        })();
+
         this.users = (function () {
             const url = $rootScope.apiURL + 'users/';
             return {
@@ -36,17 +48,21 @@ angular.module('webApp')
             };
         })();
 
-        this.auth = (function () {
-            const url = $rootScope.apiURL + 'auth/';
+        this.channels = (function () {
+            const url = $rootScope.apiURL + 'channels/';
             return {
-                registration: function (data) {
-                    return $http.post(url + 'register', data, config());
+                all: function () {
+                    return $http.get(url, config());
                 },
-                login: function (data) {
-                    return $http.post(url + 'login', data, config());
+                create: function (data) {
+                    return $http.post(url, data, config());
+                },
+                delete: function (id) {
+                    return $http.delete(url + id, config());
                 }
             }
         })();
+
 
         this.isValid = function (response) {
             return response.status >= 200 && response.status < 400;

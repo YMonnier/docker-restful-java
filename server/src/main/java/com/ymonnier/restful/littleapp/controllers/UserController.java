@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserController extends AuthorizationService {
     private final static Logger LOGGER = Logger.getLogger(UserController.class.getSimpleName());
-    public final static String PATH = "persons/";
 
     public UserController(@Context HttpHeaders headers) {
         super(headers);
@@ -59,7 +58,6 @@ public class UserController extends AuthorizationService {
                         .list();
                 session.getTransaction().commit();
                 session.close();
-
                 response = Response
                         .ok(persons)
                         .build();
@@ -181,7 +179,7 @@ public class UserController extends AuthorizationService {
      * HTTP Request which allows to destroy a specific user.
      *
      * @param id user id
-     * @return a response which contains the user updated or errors.
+     * @return a response.
      */
     @DELETE
     @Path("{id}/")
@@ -198,20 +196,20 @@ public class UserController extends AuthorizationService {
                 if (user == null) {
                     response = Error.notFound(String.valueOf(id))
                             .getResponse();
-                    LOGGER.warning("#GET {" + id + "} " + response.toString());
+                    LOGGER.warning("#DELETE {" + id + "} " + response.toString());
                 } else {
                     session.delete(user);
                     response = Response
                             .ok(user)
                             .build();
-                    LOGGER.info("#GET {" + id + "} " + response.toString());
+                    LOGGER.info("#DELETE {" + id + "} " + response.toString());
                 }
                 session.getTransaction().commit();
                 session.close();
             } catch (Exception exception) {
                 response = Error.internalServer(exception)
                         .getResponse();
-                LOGGER.warning("#GET {" + id + "} " + exception.getLocalizedMessage());
+                LOGGER.warning("#DELETE {" + id + "} " + exception.getLocalizedMessage());
                 session.getTransaction().rollback();
             }
         } else {

@@ -12,7 +12,6 @@ angular.module('webApp')
         $scope.auth = $rootScope.user;
         $scope.users = [];
         $scope.errors = [];
-        var update = false;
 
         const setErrors = function (response) {
             if (response.status >= 400) {

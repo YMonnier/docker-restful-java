@@ -25,6 +25,7 @@ import javax.ws.rs.core.Response;
 public abstract class AuthorizationService {
 
     protected boolean authorization;
+    protected User authenticate;
 
     public AuthorizationService(@Context HttpHeaders headers) {
         authorization = false;
@@ -41,9 +42,9 @@ public abstract class AuthorizationService {
                 criteria.select(root);
                 criteria.where(builder.equal(root.get(User_.token), token));
 
-                User user = session.createQuery(criteria).getSingleResult();
+                authenticate = session.createQuery(criteria).getSingleResult();
 
-                if (user != null)
+                if (authenticate != null)
                     authorization = true;
             } catch (Exception e) {
             }

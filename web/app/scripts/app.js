@@ -39,10 +39,10 @@ angular
                 controllerAs: 'users',
                 middleware: 'middlewareAuth'
             })
-            .when('/chat', {
+            .when('/channels', {
                 templateUrl: 'views/channels.html',
-                controller: 'ChatCtrl',
-                controllerAs: 'chat',
+                controller: 'ChannelsCtrl',
+                controllerAs: 'channels',
                 middleware: 'middlewareAuth'
             })
             .when('/login', {
