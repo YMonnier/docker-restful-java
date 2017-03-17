@@ -8,7 +8,7 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-    .controller('ChannelsCtrl', function ($scope, $rootScope, apiService) {
+    .controller('ChannelsCtrl', function ($scope, $rootScope, $location, apiService, channelParams) {
         console.log('ChannelsCtrl');
         console.log(window.location.host);
 
@@ -75,22 +75,10 @@ angular.module('webApp')
                 });
         };
 
+        $scope.join = function(channel) {
+            channelParams.channel = channel;
+            $location.path('/channels/' + channel.id + '/');
+        };
 
-        /*
-         var wss = [
-         new WebSocket("ws://localhost:8080/littleapp/chat"),
-         new WebSocket("ws://localhost:8080/chat")
-         ];
-
-         wss.forEach(function (ws) {
-         ws.onopen = function (websocket) {
-         console.log('on open...');
-         console.log(websocket);
-         };
-         ws.onerror = function (websocket) {
-         console.log('on error...');
-         console.log(websocket);
-         };
-         });
-         */
+        
     });

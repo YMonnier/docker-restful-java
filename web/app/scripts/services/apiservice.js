@@ -59,6 +59,9 @@ angular.module('webApp')
                 },
                 delete: function (id) {
                     return $http.delete(url + id, config());
+                },
+                message: function(id) {
+                  return $http.get(url + id + '/messages', config());
                 }
             }
         })();

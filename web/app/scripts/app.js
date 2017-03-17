@@ -45,6 +45,12 @@ angular
                 controllerAs: 'channels',
                 middleware: 'middlewareAuth'
             })
+            .when('/channels/:id', {
+                templateUrl: 'views/messages.html',
+                controller: 'MessagesCtrl',
+                controllerAs: 'messages',
+                //middleware: 'middlewareAuth'
+            })
             .when('/login', {
                 templateUrl: 'views/auth/login.html',
                 controller: 'LoginCtrl',
@@ -55,11 +61,13 @@ angular
                 controller: 'RegisterCtrl',
                 controllerAs: 'auth/register'
             })
+
             .otherwise({
                 redirectTo: '/'
             });
     })
     .run(function ($rootScope) {
         $rootScope.apiURL = 'http://127.0.0.1:8080/littleapp/';
+        $rootScope.wsURL = 'ws://localhost:8025/littleapp/ws/channel/';
         $rootScope.user = {test: 'test'};
     });
