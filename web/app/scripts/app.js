@@ -48,7 +48,7 @@ angular
             .when('/channels/:id', {
                 templateUrl: 'views/messages.html',
                 controller: 'MessagesCtrl',
-                controllerAs: 'messages',
+                controllerAs: 'messages'
                 //middleware: 'middlewareAuth'
             })
             .when('/login', {

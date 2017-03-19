@@ -1,15 +1,16 @@
 <div class="ui feed">
-    <div class="event" ng-repeat="message in messages">
+    <div class="event" ng-repeat="msg in msgs">
         <div class="content">
             <div class="summary">
-                {{message.user.nickname}}
+                {{msg.user.nickname}}
                 <div class="date">
-                    {{message.date}}
+                    {{msg.date}}
                 </div>
             </div>
             <div class="extra text">
-                {{message.content}}
+                {{msg.content}}
             </div>
         </div>
     </div>
+
 </div>

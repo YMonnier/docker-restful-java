@@ -14,9 +14,17 @@ angular.module('webApp')
 
         const FROM = {SERVER: 'SERVER', CLIENT: 'CLIENT'};
 
-        $scope.messages = [];
-        $scope.messages.push('test');
-        console.log($scope.messages);
+        $scope.msgs = [];
+
+
+        var message_obj = function (date, user, content) {
+            return {
+                date: date,
+                user: user,
+                content: content
+            }
+        };
+
         var ws = new WebSocket($rootScope.wsURL + $routeParams.id + '/' + $rootScope.user.nickname);
         ws.onopen = function (websocket) {
             console.log('on open...');
@@ -26,7 +34,7 @@ angular.module('webApp')
             console.log('message...');
             console.log(message);
             if (message.data) {
-                push(message.data);
+                test(message.data);
             }
         };
         ws.onerror = function (websocket) {
@@ -34,20 +42,26 @@ angular.module('webApp')
             console.log(websocket);
         };
 
-        var push = function (data) {
-            var data = JSON.parse(data);
-            if (data.from === FROM.SERVER) {
-                var content = JSON.parse(data.content);
-                console.log(content);
-                var obj = {
-                    data: content.date,
-                    user: {nickname: content.nickname},
-                    content: content.content
-                };
-                console.log(obj);
-                $scope.messages.push(obj)
-            } else if (data.from === FROM.SERVER) {
+        var test = function (data) {
+            console.log(data);
+            var dataJson = JSON.parse(data);
+            console.log(dataJson);
+            if (dataJson.from === FROM.SERVER) {
+                var message = JSON.parse(dataJson.content);
+                console.log(message);
+                var msg = message_obj(message.date,
+                    {nickname: message.nickname},
+                    message.content);
+                add(msg);
+                console.log($scope.msgs);
+            } else if (data.from === FROM.CLIENT) {
 
             }
+        };
+        var add = function (object) {
+            $scope.$apply(function(){
+                $scope.msgs.push(object);
+            });
+
         }
     });
