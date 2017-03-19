@@ -77,7 +77,7 @@ angular.module('webApp')
 
         $scope.join = function(channel) {
             channelParams.channel = channel;
-            $location.path('/channels/' + channel.id + '/');
+            $location.path('/channels/' + channel.id + '/' + $rootScope.user.nickname);
         };
 
         

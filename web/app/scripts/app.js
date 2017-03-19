@@ -45,11 +45,11 @@ angular
                 controllerAs: 'channels',
                 middleware: 'middlewareAuth'
             })
-            .when('/channels/:id', {
+            .when('/channels/:id/:nickname', {
                 templateUrl: 'views/messages.html',
                 controller: 'MessagesCtrl',
-                controllerAs: 'messages'
-                //middleware: 'middlewareAuth'
+                controllerAs: 'messages',
+                middleware: 'middlewareAuth'
             })
             .when('/login', {
                 templateUrl: 'views/auth/login.html',

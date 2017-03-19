@@ -1,16 +1,23 @@
-<div class="ui feed">
-    <div class="event" ng-repeat="msg in msgs">
-        <div class="content">
-            <div class="summary">
-                {{msg.user.nickname}}
-                <div class="date">
-                    {{msg.date}}
+<div id="messages">
+    <div class="chat">
+        <div class="ui feed">
+            <div class="event" ng-repeat="msg in msgs">
+                <div class="content">
+                    <div class="summary">
+                        {{msg.nickname}}
+                        <div class="date">
+                            {{msg.date}}
+                        </div>
+                    </div>
+                    <div class="extra text">
+                        {{msg.content}}
+                    </div>
                 </div>
-            </div>
-            <div class="extra text">
-                {{msg.content}}
             </div>
         </div>
     </div>
-
+    <form name="form" ng-submit="send(message)">
+        <input class="textarea" type="text" ng-model="message" ng-class="{disabled: form.$error.required}"
+               placeholder="You message..."/>
+    </form>
 </div>

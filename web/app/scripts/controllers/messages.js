@@ -9,22 +9,21 @@
  */
 angular.module('webApp')
     .controller('MessagesCtrl', function ($scope, $rootScope, $routeParams) {
-        console.log('messages controller');
-        console.log('channel number ' + $routeParams.id);
-
         const FROM = {SERVER: 'SERVER', CLIENT: 'CLIENT'};
-
         $scope.msgs = [];
 
-
-        var message_obj = function (date, user, content) {
+        var message_obj = function (date, nickname, content) {
             return {
                 date: date,
-                user: user,
+                nickname: nickname,
                 content: content
             }
         };
 
+        /**
+         * Websocket object. Init connection + setup handlers.
+         * @type {WebSocket}
+         */
         var ws = new WebSocket($rootScope.wsURL + $routeParams.id + '/' + $rootScope.user.nickname);
         ws.onopen = function (websocket) {
             console.log('on open...');
@@ -34,7 +33,7 @@ angular.module('webApp')
             console.log('message...');
             console.log(message);
             if (message.data) {
-                test(message.data);
+                push(message.data);
             }
         };
         ws.onerror = function (websocket) {
@@ -42,24 +41,47 @@ angular.module('webApp')
             console.log(websocket);
         };
 
-        var test = function (data) {
-            console.log(data);
-            var dataJson = JSON.parse(data);
-            console.log(dataJson);
-            if (dataJson.from === FROM.SERVER) {
-                var message = JSON.parse(dataJson.content);
+        $scope.send = function (message) {
+            console.log('send function...');
+            if (message) {
                 console.log(message);
-                var msg = message_obj(message.date,
-                    {nickname: message.nickname},
-                    message.content);
-                add(msg);
-                console.log($scope.msgs);
-            } else if (data.from === FROM.CLIENT) {
-
+                ws.send(message);
             }
         };
+
+
+        // Utilities
+        /**
+         * Parse the data from received from the websocket.
+         * @param data A string json.
+         */
+        var push = function (data) {
+            var dataJson;
+            if (dataJson = JSON.parse(data)) {
+                console.log(dataJson);
+                var message = dataJson.content;
+                if (dataJson.from === FROM.SERVER) {
+                    add(message_obj(message.date,
+                        'Server',
+                        message.content));
+                } else if (dataJson.from === FROM.CLIENT) {
+                    add(message_obj(message.date,
+                        message.nickname,
+                        message.content));
+                }
+            }
+            console.log($scope.msgs);
+        };
+
+        /**
+         * Add object into array
+         * from outside the angular process
+         * @param object
+         */
         var add = function (object) {
-            $scope.$apply(function(){
+            console.log("ADDDDDD");
+            console.log(object);
+            $scope.$apply(function () {
                 $scope.msgs.push(object);
             });
 
