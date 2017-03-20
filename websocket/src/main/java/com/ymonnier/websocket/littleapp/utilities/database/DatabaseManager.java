@@ -24,17 +24,17 @@ public class DatabaseManager {
     /**
      * The Constant url.
      */
-    private static final String url = "jdbc:postgresql://localhost:5432/app_network";
+    private static final String url = "jdbc:postgresql://database:5432/apirest";
 
     /**
      * The Constant user.
      */
-    private static final String user = "Ysee";
+    private static final String user = "root";
 
     /**
      * The Constant password.
      */
-    private static final String password = "";
+    private static final String password = "root";
 
     static {
         for (int i = 0; i < numberOfInitialConnections; i++) {

@@ -67,7 +67,7 @@ angular
             });
     })
     .run(function ($rootScope) {
-        $rootScope.apiURL = 'http://127.0.0.1:8080/littleapp/';
-        $rootScope.wsURL = 'ws://localhost:8025/littleapp/ws/channel/';
+        $rootScope.apiURL = 'http://192.168.99.100:8080/littleapp/';
+        $rootScope.wsURL = 'ws://127.0.0.1:8025/littleapp/ws/channel/';
         $rootScope.user = {test: 'test'};
     });

@@ -2,41 +2,58 @@
 
 Deployment with [Docker](https://www.docker.com).
 
+* Server Restful
+* Websocket
+* AngularsJS Client
+
 ## API Restful
 
 Java project using [Jersey](https://jersey.java.net), [Grizzly](https://grizzly.java.net) and [Hibernate](http://hibernate.org)
 
-| URI path      | Resource class   | HTTP methods   | Notes                                                                           |
-|---------------|------------------|----------------|---------------------------------------------------------------------------------|
-| /persons      | PersonController | GET, POST      | POST PARAM application/json {   "name": "My Name",    "address": "My Address" } |
-| /persons/{id} | PersonController | GET, UPDATE, DELETE |                                                                                 |
+#### Authentication
+HEADER application/json
+
+| URI path       | Resource class           | HTTP methods | Notes                                                                                                |
+|----------------|--------------------------|--------------|------------------------------------------------------------------------------------------------------|
+| /auth/register | AuthenticationController | POST         | {     "nickname": "string",     "address": "string",     "password": "string",     "role": integer } |
+| /auth/login    | AuthenticationController | POST         | {    "nickname": "string",    "password":"string"}                                                   |
+
+
+#### Users
+HEADER application/json
+
+HEADER authorization
+
+authorization token is given with the `auth/login` action.
+
+| URI path    | Resource class  | HTTP methods | Notes                                       |
+|-------------|-----------------|--------------|---------------------------------------------|
+| /users      | UsersController | GET          | Get all users.                              |
+| /users/{id} | UsersController | GET          | Get a specific user depending its ID.       |
+| /user/{id}  | UsersController | PUT          | {"nickname": "string", "address": "string"} |
+| /users/{id} | UsersController | DELETE       | Delete a specific user depending its ID.    |
+
+
+#### Channels
+
+HEADER application/json
+
+HEADER authorization
+
+authorization token is given with the `auth/login` action.
+
+| URI path   | Resource class     | HTTP methods | Notes                                    |
+|------------|--------------------|--------------|------------------------------------------|
+| /channels  | ChannelsController | GET          | Get all channels.                        |
+| /channels/ | ChannelsController | POST         | {"name": "string", "user_id": "integer"} |
 
 ## Installation
 
-### Without Docker
-
-1. `git clone git@github.com:YMonnier/docker-restful-java.git`
-2. `cd docker-restful-java/`
-3. Create a database and user/password on [PostgresSQL](https://www.postgresql.org)
-4. Change **Hibernate configuration** depending on your database settings (`server/src/main/resources/hibernate.cfg.xml`)
-5. Change the **host url** server (`server/src/main/java/com/ymonnier/restful/littleapp/Main.java`)
-6. Change the api url on the client side(`$rootScope.apiURL web/app/scripts/app.js`)
-
-Run the server:
-
-`cd server/ && mvn package exec:java`
-
-Run the client:
-`cd web/ && npm install && bower install && grunt serve`
-
-or
-
-execute `web/dist/index.html`
-
 ### With Docker
-```
-docker-compose up -d
-```
+
+`docker-compose up -d`
+
+
 Then run the script shell `run.sh` allowing to change the ip into the **client site** to access to server container from the host.
 
  `./run.sh $(docker-machine ip)` or `./run.sh [your docker bridge ip]`
@@ -45,18 +62,22 @@ Now you can test the server access by using `curl`
 
 ```
 curl -H 'Content-Type: application/json' \
-     -X POST -d '{"name": "YMonnier", "address": "2253–2331 Alder St, Vancouver BC, Canada"}' \
-     $(docker-machine ip):8080/littleapp/persons/
+     -X POST -d '{"nickname": "YMonnier", "address": "2253–2331 Alder St, Vancouver BC, Canada", "password": "abcd123456", "role": 0}' \
+     $(docker-machine ip):8080/littleapp/auth/register
 
 Response:
 {
   "id": 1,
-  "name": "YMonnier",
-  "address": "2253–2331 Alder St, Vancouver BC, Canada"
+  "nickname": "ymonnier",
+  "password": "$2a$10$ZdU9nA9.efNEFe7X4tjpL.0VA2I5JRdvXi7/DfQMMf4tk1HXvHLOK",
+  "address": "10 street...",
+  "token": null,
+  "channels": [],
+  "role": 0
 }
 ```
 
-or you can use the client angular to add/update/delete persons...
+or you can use the client angular...
 
 Run the client: `cd web/ && npm install && bower install && grunt serve` or execute `web/dist/index.html`
 

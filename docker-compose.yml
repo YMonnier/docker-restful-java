@@ -6,6 +6,15 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
       POSTGRES_DB: apirest
+  websocket:
+    build: ./websocket/
+    ports:
+      - "8025:8025"
+    links:
+      - db:database
+    depends_on:
+      db:
+        condition: service_started
   server:
     build: ./server/
     ports:

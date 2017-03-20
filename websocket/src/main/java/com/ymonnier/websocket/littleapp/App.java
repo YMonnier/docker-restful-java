@@ -10,9 +10,9 @@ import java.io.InputStreamReader;
  * Hello world!
  *
  */
-public class App 
+public class App
 {
-    public static final String BASE_URI = "127.0.0.1";
+    public static final String BASE_URI = "0.0.0.0";
 
     private static Server startServer() {
         return new Server(BASE_URI, 8025, "/littleapp/ws", null, ChannelEndPoint.class);

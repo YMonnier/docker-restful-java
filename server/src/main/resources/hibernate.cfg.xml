@@ -5,15 +5,16 @@
 <hibernate-configuration>
     <session-factory>
         <!-- URL from docker links & env config see(./docker/database.setup.env) -->
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/app_network</property>
-        <property name="hibernate.connection.username">Ysee</property>
-        <property name="hibernate.connection.password_hash"></property>
+        <property name="hibernate.connection.url">jdbc:postgresql://database:5432/apirest</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</property>
 
         <property name="show_sql">true</property>
-        <!-- <property name="hbm2ddl.auto">create-drop</property> -->
-        <property name="hbm2ddl.auto">create-drop</property>
+
+        <property name="format_sql">true</property>
+        <property name="hbm2ddl.auto">create</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <!-- <property name="hbm2ddl.auto">create</property> -->
 
@@ -24,11 +25,5 @@
         <mapping class="com.ymonnier.restful.littleapp.models.User" />
         <mapping class="com.ymonnier.restful.littleapp.models.Channel" />
         <mapping class="com.ymonnier.restful.littleapp.models.Message" />
-
-
-
-
     </session-factory>
-
-
 </hibernate-configuration>
