@@ -13,7 +13,7 @@
 
         <property name="show_sql">true</property>
         <!-- <property name="hbm2ddl.auto">create-drop</property> -->
-        <property name="hbm2ddl.auto">validate</property>
+        <property name="hbm2ddl.auto">create-drop</property>
         <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
         <!-- <property name="hbm2ddl.auto">create</property> -->
 

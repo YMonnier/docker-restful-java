@@ -20,6 +20,7 @@ public class MessageDAO extends DAO<Message> {
     public static final String TABLE_NAME = "messages";
     public static final String TABLE_NAME_CHANNEL = "channels_messages";
     public static final String COLUMN_CONTENT = "content";
+    public static final String COLUMN_DATE = "date";
     public static final String COLUMN_CHANNEL_ID = "channel_id";
     public static final String COLUMN_MESSAGES_ID = "messages_id";
     public static final String COLUMN_USER_ID = "user_id";
@@ -27,7 +28,8 @@ public class MessageDAO extends DAO<Message> {
     private static final String INSERT_MESSAGE = "INSERT INTO " + TABLE_NAME + " ( "
             + COLUMN_CONTENT + ","
             + COLUMN_CHANNEL_ID + ","
-            + COLUMN_USER_ID + ") VALUES(?, ?, ?)";
+            + COLUMN_USER_ID + ","
+            + COLUMN_DATE + ") VALUES(?, ?, ?, ?)";
 
     private static final String INSERT_CHANNEL_MESSAGE = "INSERT INTO " + TABLE_NAME_CHANNEL + " ( "
             + COLUMN_CHANNEL_ID + ","
@@ -42,13 +44,14 @@ public class MessageDAO extends DAO<Message> {
     public boolean create(Message obj) throws InsertionException {
         boolean res = false;
         assert obj != null;
-        if(obj == null)
+        if (obj == null)
             throw new IllegalArgumentException("The object should not be null.");
 
-        try (PreparedStatement ps = connection.prepareStatement(INSERT_MESSAGE, new String[] {"id"})) {
+        try (PreparedStatement ps = connection.prepareStatement(INSERT_MESSAGE, new String[]{"id"})) {
             ps.setString(1, obj.getContent());
             ps.setLong(2, obj.getChannelId());
             ps.setLong(3, obj.getUserId());
+            ps.setString(4, obj.getDate());
 
             ps.executeUpdate();
 
@@ -60,8 +63,7 @@ public class MessageDAO extends DAO<Message> {
                         pss.setLong(2, generatedKeys.getLong(1));
                         pss.execute();
                     }
-                }
-                else {
+                } else {
                     //throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }

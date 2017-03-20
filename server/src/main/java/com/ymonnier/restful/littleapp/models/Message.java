@@ -24,6 +24,10 @@ public class Message {
     @Expose
     String content;
 
+    @NotNull
+    @Expose
+    String date;
+
     @ManyToOne
     //@Expose
     Channel channel;
