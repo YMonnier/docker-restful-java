@@ -1,6 +1,7 @@
 package com.ymonnier.websocket.littleapp.ws;
 
-import com.ymonnier.websocket.littleapp.utilities.json.From;
+import com.ymonnier.websocket.littleapp.utilities.models.From;
+import com.ymonnier.websocket.littleapp.utilities.models.Message;
 import org.glassfish.grizzly.Grizzly;
 
 import javax.websocket.Session;
@@ -57,7 +58,7 @@ class SessionManager {
      * @param id channel ID.
      * @param message message for sharing.
      */
-    void broadcast(Long id, String message, From.Type from) {
+    void broadcast(Long id, Message message, From.Type from) {
         LOGGER.info("Broadcast to channel " + id + ": " + message);
         if(sessions.containsKey(id)) {
             String mes = new From(from.name(), message).toJson();

@@ -1,6 +1,8 @@
-package com.ymonnier.websocket.littleapp.utilities.json;
+package com.ymonnier.websocket.littleapp.utilities.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.ymonnier.websocket.littleapp.utilities.date.DateFormatter;
+import com.ymonnier.websocket.littleapp.utilities.json.GsonSingleton;
 
 /**
  * Project websocket.
@@ -15,22 +17,38 @@ public class Message {
     private String content;
     private String nickname;
 
+    @SerializedName("user_id")
+    private Long userId;
+
+    @SerializedName("channel_id")
+    private Long channelId;
+
     public Message(Builder builder) {
         this.date = DateFormatter.dateTime();
-        this.content = builder.message;
+        this.content = builder.content;
         this.nickname = builder.nickname;
+        this.channelId = builder.channelId;
+        this.userId = builder.userId;
     }
 
     public String getDate() {
         return date;
     }
 
-    public String getMessage() {
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getContent() {
         return content;
     }
 
-    public String getNickname() {
-        return nickname;
+    public Long getUserId() {
+        return userId;
+    }
+
+    public Long getChannelId() {
+        return channelId;
     }
 
     public String toJson() {
@@ -49,20 +67,32 @@ public class Message {
     }
 
     public static class Builder {
-        private String message;
+        private String content;
         private String nickname;
+        private Long userId;
+        private Long channelId;
 
         public Message build() {
             return new Message(this);
         }
 
-        public Builder setMessage(String message) {
-            this.message = message;
+        public Builder setContent(String content) {
+            this.content = content;
             return this;
         }
 
         public Builder setNickname(String nickname) {
             this.nickname = nickname;
+            return this;
+        }
+
+        public Builder setUserId(Long userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder setChannelId(Long channelId) {
+            this.channelId = channelId;
             return this;
         }
     }

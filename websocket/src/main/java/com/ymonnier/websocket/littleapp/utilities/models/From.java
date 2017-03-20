@@ -1,4 +1,6 @@
-package com.ymonnier.websocket.littleapp.utilities.json;
+package com.ymonnier.websocket.littleapp.utilities.models;
+
+import com.ymonnier.websocket.littleapp.utilities.json.GsonSingleton;
 
 /**
  * Project websocket.
@@ -12,12 +14,20 @@ public class From {
     public enum Type {
         SERVER, CLIENT
     }
-    String from;
-    String content;
+    private String from;
+    private Message content;
 
-    public From(String from, String content) {
+    public From(String from, Message content) {
         this.from = from;
         this.content = content;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public Message getContent() {
+        return content;
     }
 
     public String toJson() {
