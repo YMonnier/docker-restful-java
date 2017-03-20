@@ -60,7 +60,7 @@ angular.module('webApp')
                 delete: function (id) {
                     return $http.delete(url + id, config());
                 },
-                message: function(id) {
+                messages: function(id) {
                   return $http.get(url + id + '/messages', config());
                 }
             }

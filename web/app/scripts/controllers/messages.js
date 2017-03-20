@@ -8,17 +8,29 @@
  * Controller of the webApp
  */
 angular.module('webApp')
-    .controller('MessagesCtrl', function ($scope, $rootScope, $routeParams) {
+    .controller('MessagesCtrl', function ($scope, $rootScope, $routeParams, apiService) {
         const FROM = {SERVER: 'SERVER', CLIENT: 'CLIENT'};
         $scope.msgs = [];
+        $scope.processing = true;
 
         var message_obj = function (date, nickname, content) {
             return {
                 date: date,
-                nickname: nickname,
+                user: {nickname: nickname},
                 content: content
             }
         };
+
+        apiService.channels.messages($routeParams.id)
+            .then(function (response) {
+                if (apiService.isValid(response)) {
+                    $scope.processing = false;
+                    if (response.data)
+                        $scope.msgs = response.data;
+                }
+            }, function (error) {
+                $scope.processing = false;
+            });
 
         /**
          * Websocket object. Init connection + setup handlers.
@@ -41,11 +53,22 @@ angular.module('webApp')
             console.log(websocket);
         };
 
+        /**
+         * Send a message through the websocket.
+         * @param message message to send.
+         */
         $scope.send = function (message) {
             console.log('send function...');
             if (message) {
                 console.log(message);
-                ws.send(message);
+                var json = JSON.stringify({
+                    content: message,
+                    channel_id: $routeParams.id,
+                    user_id: $rootScope.user.id
+                });
+                console.log(json);
+                ws.send(json);
+                $scope.message = '';
             }
         };
 
