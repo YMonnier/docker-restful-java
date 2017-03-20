@@ -162,4 +162,45 @@ public class ChannelController extends AuthorizationService {
         }
         return response;
     }
+
+    /**
+     * Get all messages from a specific channel.
+     * @return messages.
+     */
+    @GET
+    @Path("{id}/messages")
+    public Response messages(@PathParam("id") Long id) {
+        LOGGER.info("#GET MESSAGES ");
+        Response response = null;
+        if (this.authorization) {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            try {
+                session.beginTransaction();
+                Channel channel = session.get(Channel.class, id);
+
+                if (channel == null) {
+                    response = Error.notFound(String.valueOf(id))
+                            .getResponse();
+                    LOGGER.warning("#GET MESSAGES  {" + id + "} " + response.toString());
+                } else {
+
+                    response = Response
+                            .ok(channel.getMessages())
+                            .build();
+
+                    //channel.getMessages().forEach(message -> LOGGER.info(message.toString()));
+                    LOGGER.info("#GET MESSAGES  size:" + channel.getMessages().size() + " " + response.toString());
+                }
+                session.close();
+            } catch (Exception exception) {
+                response = Error.internalServer(exception)
+                        .getResponse();
+                LOGGER.warning("#GET MESSAGES  {" + id + "} " + exception.getLocalizedMessage());
+                session.getTransaction().rollback();
+            }
+        } else {
+            response = this.getUnauthorization();
+        }
+        return response;
+    }
 }

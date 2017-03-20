@@ -26,27 +26,34 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
+    @Expose
     private Long id;
 
     @NotNull
     @Length(min = 4)
     @Column(unique = true)
+    @Expose
     private String nickname;
 
     @Column(name = "password_hash")
     @SerializedName("password")
+    @Expose
     private String passwordHash = null;
 
     @NotNull
+    @Expose
     private String address;
 
+    @Expose
     private String token;
 
     @OneToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
+    @Expose
     private List<Channel> channels = new ArrayList<>();
 
     @NotNull
+    @Expose
     private int role;
 
     public User() {
