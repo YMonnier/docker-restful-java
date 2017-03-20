@@ -45,7 +45,7 @@ authorization token is given with the `auth/login` action.
 | URI path   | Resource class     | HTTP methods | Notes                                    |
 |------------|--------------------|--------------|------------------------------------------|
 | /channels  | ChannelsController | GET          | Get all channels.                        |
-| /channels/ | ChannelsController | POST         | {"name": "string", "user_id": "integer"} |
+| /channels | ChannelsController | POST         | {"name": "string", "user_id": "integer"} |
 
 ## Installation
 

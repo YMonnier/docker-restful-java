@@ -9,7 +9,7 @@
  */
 angular.module('webApp')
     .controller('LoginCtrl', function ($rootScope, $scope, $location, apiService, authenticate) {
-        $scope.user = {nickname: 'ymonnier', password: 'abcd123456'};
+        $scope.user = {};
         $scope.processing = false;
         $scope.errors = [];
         $scope.login = function(user) {
