@@ -19,11 +19,16 @@ if [[ ! $ip =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
 fi
 
 sub="s/http:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:8080\/littleapp/http:\/\/$ip:8080\/littleapp/g"
+
+subws="s/ws:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:8025\/littleapp/ws:\/\/$ip:8025\/littleapp/g"
+
 s1="./web/app/"
 s2="./web/dist/"
 
 if [ "$(uname)" == "Darwin" ]; then
     find $s1 $s2 -name "*.js" | xargs sed -i '' -E $sub
+    find $s1 $s2 -name "*.js" | xargs sed -i '' -E $subws
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     find $s1 $s2 -name "*.js" | xargs sed -i'' -r -e $sub
+    find $s1 $s2 -name "*.js" | xargs sed -i'' -r -e $subws
 fi
